@@ -30,7 +30,7 @@ function displayPokemonInfo() {
         for(i = 0; i < pokemonArray.length; i++){
 
         // Giving the image tag an src attribute of a property pulled off the result item
-        pokemonImage.attr("src", gifs[i].images.fixed_height.url);
+        pokemonImage.attr("src", gifs[0].images.fixed_height.url);
 
         // Appending the paragraph and pokemonImage we created to the "gifDiv" div we created
         $('#new-pokemon').append(pokemonImage);
@@ -40,6 +40,11 @@ function displayPokemonInfo() {
 
         // putting the new pokemon gifs above the previous ones clicked
         $('#new-pokemon').prepend(pokemonDiv);
+
+        pokemonImage.on('click', function(){
+            $(pokemonImage).empty();
+            $(pokemonImage).attr("src", gifs[0].images.fixed_height_still.url);
+        })
 
     });
 }
@@ -103,6 +108,21 @@ $(document).on('click', '.pokemon-btn', displayPokemonInfo);
 
 // Call renderButtons function to display initial buttons
 renderButtons();
+
+$(".gif").on("click", function () {
+    // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+    var state = $(this).attr("data-state");
+    // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+    // Then, set the image's data-state to animate
+    // Else set src to the data-still value
+    if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+    } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+    }
+});
 
  // first need to make sure code above works so i can display the inital array (loop through array and display them as buttons, also need to change api request per button clicked)
  // then need new buttons made to appear next to those initial ones when press 'submit'
